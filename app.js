@@ -5,7 +5,6 @@ const filterOpt = document.querySelector('.filter-todo');
 
 todoBtn.addEventListener('click', addTodo)
 todoLs.addEventListener('click', delORcheck)
-filterOpt.addEventListener('click', filterTodo)
 
 
 function addTodo(event) {
@@ -20,6 +19,8 @@ function addTodo(event) {
     newTodo.classList.add('todo-item')
 
     todoDiv.appendChild(newTodo)
+    //Save to localStorage
+    saveTodoLocal(todoInp.value)
 
     //check btn
     const completeBtn = document.createElement('button')
@@ -58,20 +59,13 @@ function delORcheck(e) {
     }
 }
 
-function filterTodo(e) {
-    const todos = todoLs.childNodes
-    console.log(todos)
-    todos.forEach(function(todo){
-        switch(e.target.value) {
-            case 'all':
-                todo.style.display = 'flex';
-                break
-            case 'completed':
-                if (todo.classList.contains('completed')) {
-                    todo.style.display = 'flex'
-                } else {
-                    todo.style.display = 'none'
-                }
-        }
-    })
+function saveTodoLocal(todo) {
+    let todos;
+    if (localStorage.getItem('todos') === null) {
+        todos = []
+    } else {
+        todos = JSON.parse(localStorage.getItem('todos'))
+    }
+    todos.push(todo)
+    localStorage.setItem('todos', JSON.stringify('todos'))
 }
